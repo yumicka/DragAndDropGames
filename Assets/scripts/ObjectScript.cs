@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectScript : MonoBehaviour
@@ -11,14 +13,14 @@ public class ObjectScript : MonoBehaviour
     [HideInInspector]
     public bool rightPlace = false;
     public GameObject lastDragged = null;
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+
+    void Awake()
     {
-        
+        startCoordinates = new Vector2[vehicles.Length];
+        for(int i = 0; i < vehicles.Length; i++)
+        {
+        startCoordinates[i] = vehicles[i].GetComponent<RectTransform>().localPosition;
+        }
     }
 }

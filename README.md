@@ -1,9 +1,9 @@
 # DragAndDropGames
  Unity 2D Drag and Drop games for children +6 
  ** To do list: 
-- [ ] Create the necessary folders
-- [ ] And necessary assets
-- [ ] And cars on thw map
+- [ x ] Create the necessary folders
+- [ x ] And necessary assets
+- [ x ] And cars on thw map
 - [ ] Create c# script for drag and drop
 - [ ] Create c# for transformation
 - [ ] Create c# for object fixation

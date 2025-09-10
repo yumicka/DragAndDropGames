@@ -7,17 +7,20 @@ public class Screen_boundaries_script : MonoBehaviour
     private float minX, maxX, minY, maxY;
     public float padding = 0.02f;
 
-    void Awake() //atrak par start
+
+    void Awake()
     {
-        Vector3 lowerLeft = Camera.main.ScreenToWorldPoint(Vector3.zero); //viss ir pa nullem
+        Vector3 lowerLeft = Camera.main.ScreenToWorldPoint(Vector3.zero);
         Vector3 upperRight =
             Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+
         float widthReduction = (upperRight.x - lowerLeft.x) * padding;
         float heightReduction = (upperRight.y - lowerLeft.y) * padding;
+
         minX = lowerLeft.x + widthReduction;
         maxX = upperRight.x - widthReduction;
         minY = lowerLeft.y + heightReduction;
-        maxX = upperRight.y - heightReduction;
+        maxY = upperRight.y - heightReduction;
     }
 
     public Vector2 GetClampedPosition(Vector3 position)
