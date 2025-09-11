@@ -18,9 +18,12 @@ public class ObjectScript : MonoBehaviour
     void Awake()
     {
         startCoordinates = new Vector2[vehicles.Length];
-        for(int i = 0; i < vehicles.Length; i++)
+        Debug.Log(vehicles.Length);
+        Debug.Log(startCoordinates.Length);
+        for (int i = 0; i < vehicles.Length; i++)
         {
-        startCoordinates[i] = vehicles[i].GetComponent<RectTransform>().localPosition;
+            startCoordinates[i] = vehicles[i].GetComponent<RectTransform>().localPosition;
+            Debug.Log(vehicles[i].GetComponent<RectTransform>().localPosition);
         }
     }
 }

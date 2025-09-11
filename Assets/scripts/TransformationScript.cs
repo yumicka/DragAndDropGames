@@ -18,7 +18,7 @@ public class TransformationScript : MonoBehaviour
 
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                if (objectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.y < 0.12f)
+                if (objectScript.lastDragged.GetComponent<RectTransform>().transform.localScale.y < 0.99f)
                 {
                     objectScript.lastDragged.GetComponent<RectTransform>().transform.localScale =
                         new Vector3(
