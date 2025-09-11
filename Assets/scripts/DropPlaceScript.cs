@@ -37,6 +37,38 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
                     (xSizeDiff <= 0.05 && ySizeDiff <= 0.05))
                 {
                     Debug.Log("Correct place");
+                    objScript.rightPlace = true;
+                    eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = 
+                        GetComponent<RectTransform>().anchoredPosition;
+                    eventData.pointerDrag.GetComponent<RectTransform>().localRotation =
+                        GetComponent<RectTransform>().localRotation;
+                    eventData.pointerDrag.GetComponent<RectTransform>().localScale = 
+                        GetComponent<RectTransform>().localScale;
+
+                    switch (eventData.pointerDrag.tag)
+                    {
+                        case "Garbage":
+                            objScript.effects.PlayOneShot(objScript.audioCli[2]);
+                            break;
+                        case "Medicine":
+                            objScript.effects.PlayOneShot(objScript.audioCli[3]);
+                            break;
+                        case "Fire":
+                            objScript.effects.PlayOneShot(objScript.audioCli[4]);
+                            break;
+                        case "Bus":
+                            objScript.effects.PlayOneShot(objScript.audioCli[5]);
+                            break;
+                        case "Auto":
+                            objScript.effects.PlayOneShot(objScript.audioCli[6]);
+                            break;
+                        case "Cement":
+                            objScript.effects.PlayOneShot(objScript.audioCli[7]);
+                            break;
+                        default:
+                            Debug.Log("Unknown tag detected");
+                            break;
+                    }
                 }
 
             }
