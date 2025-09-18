@@ -12,6 +12,8 @@ TagManager:
   - Cement
   - Auto2
   - Auto3
+  - Ekskavator
+  - Police
   layers:
   - Default
   - TransparentFX

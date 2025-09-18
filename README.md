@@ -14,3 +14,4 @@
 - [ x ] Create C# script for scene change and quit option
 - [ x ] Create game timer (HH:MM:SS)
 - [ x ] Add animated clouds, vehicles, people, animals etc.
+- [ x ] Add flying obstacles with destroy effects
