@@ -14,6 +14,8 @@ TagManager:
   - Auto3
   - Ekskavator
   - Police
+  - Traktor
+  - Traktor2
   layers:
   - Default
   - TransparentFX

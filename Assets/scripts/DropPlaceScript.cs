@@ -34,7 +34,7 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
                 Debug.Log("Y size difference: " + ySizeDiff);
 
                 if ((rotDiff <= 5 || (rotDiff >= 355 && rotDiff <= 360)) &&
-                    (xSizeDiff <= 0.05 && ySizeDiff <= 0.05))
+                    (xSizeDiff <= 0.20 && ySizeDiff <= 0.20))
                 {
                     Debug.Log("Correct place");
                     objScript.rightPlace = true;
@@ -64,6 +64,24 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
                             break;
                         case "Cement":
                             objScript.effects.PlayOneShot(objScript.audioCli[7]);
+                            break;
+                        case "Auto2":
+                            objScript.effects.PlayOneShot(objScript.audioCli[8]);
+                            break;
+                        case "Auto3":
+                            objScript.effects.PlayOneShot(objScript.audioCli[9]);
+                            break;
+                        case "Ekskavator":
+                            objScript.effects.PlayOneShot(objScript.audioCli[10]);
+                            break;
+                        case "Police":
+                            objScript.effects.PlayOneShot(objScript.audioCli[11]);
+                            break;
+                        case "Traktor":
+                            objScript.effects.PlayOneShot(objScript.audioCli[12]);
+                            break;
+                        case "Traktor2":
+                            objScript.effects.PlayOneShot(objScript.audioCli[12]);
                             break;
                         default:
                             Debug.Log("Unknown tag detected");
@@ -103,6 +121,29 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
                             objScript.vehicles[5].GetComponent<RectTransform>().localPosition =
                                 objScript.startCoordinates[5];
                             break;
+                        case "Auto2":
+                        objScript.vehicles[6].GetComponent<RectTransform>().localPosition =
+                            objScript.startCoordinates[6];
+                        break;
+                        case "Auto3":
+                        objScript.vehicles[7].GetComponent<RectTransform>().localPosition =
+                            objScript.startCoordinates[7];
+                        break;
+                        case "Ekskavator":
+                        objScript.vehicles[8].GetComponent<RectTransform>().localPosition =
+                            objScript.startCoordinates[8];
+                        break;
+                        case "Police":
+                            objScript.vehicles[9].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[9];
+                            break;
+                        case "Traktor":
+                        objScript.vehicles[10].GetComponent<RectTransform>().localPosition =
+                            objScript.startCoordinates[10];
+                        break;
+                        case "Traktor2":
+                        objScript.vehicles[11].GetComponent<RectTransform>().localPosition =
+                             objScript.startCoordinates[11];
+                        break; 
 
                         default:
                             Debug.Log("Unknown tag detected");
