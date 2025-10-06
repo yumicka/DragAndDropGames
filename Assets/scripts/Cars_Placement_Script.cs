@@ -6,7 +6,7 @@ public class Cars_Placement_Script : MonoBehaviour
     public ObjectScript objectScr;
     public Screen_boundaries_script screenBou;
 
-    void Awake()
+    void Start()
     {
         carPrefabs = Resources.LoadAll<GameObject>("Prefabs_cars");
         objectScr = FindFirstObjectByType<ObjectScript>();
@@ -22,7 +22,7 @@ public class Cars_Placement_Script : MonoBehaviour
         }
 
         // massivs emptyiem
-        Debug.Log(carPrefabs.Length);
+        Debug.Log("Pukpuk "+carPrefabs.Length);
     }
 
     void Update()
