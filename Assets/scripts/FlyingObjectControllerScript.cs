@@ -10,7 +10,7 @@ public class FlyingObjectControllerScript : MonoBehaviour
     public float waveAmplitude = 25f;
     public float waveFrequency = 1f;
     private ObjectScript objectScript;
-    private Screen_boundaries_script screenBoundriesScript;
+    private Screen_boundaries_script scrreenBoundriesScript;
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
     private bool isFadingOut = false;
@@ -18,19 +18,20 @@ public class FlyingObjectControllerScript : MonoBehaviour
     private Image image;
     private Color originalColor;
 
-    
     void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
-        if(canvasGroup == null)
+        if (canvasGroup == null)
         {
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
         }
+
         rectTransform = GetComponent<RectTransform>();
+
         image = GetComponent<Image>();
         originalColor = image.color;
         objectScript = FindFirstObjectByType<ObjectScript>();
-        screenBoundriesScript = FindFirstObjectByType<Screen_boundaries_script>();
+        scrreenBoundriesScript = FindFirstObjectByType<Screen_boundaries_script>();
         StartCoroutine(FadeIn());
     }
 
@@ -38,36 +39,37 @@ public class FlyingObjectControllerScript : MonoBehaviour
     void Update()
     {
         float waveOffset = Mathf.Sin(Time.time * waveFrequency) * waveAmplitude;
-        rectTransform.anchoredPosition +=
-            new Vector2(-speed * Time.deltaTime, waveOffset * Time.deltaTime);
-        if (speed > 0 && transform.position.x < (screenBoundriesScript.minX + 80) && !isFadingOut)
-        {
-            StartCoroutine(FadeOutAndDestroy());
-            isFadingOut=true;
-        }
-
-        // ->
-        if (speed < 0 && transform.position.x > 
-            (screenBoundriesScript.maxX - 80) && !isFadingOut)
+        rectTransform.anchoredPosition += new Vector2(-speed * Time.deltaTime, waveOffset * Time.deltaTime);
+        // <-
+        if (speed > 0 && transform.position.x < (scrreenBoundriesScript.minX + 80) && !isFadingOut)
         {
             StartCoroutine(FadeOutAndDestroy());
             isFadingOut = true;
         }
 
-        if(CompareTag("Bomb") && !isExploading && 
+        // ->
+        if (speed < 0 && transform.position.x > (scrreenBoundriesScript.maxX - 80) && !isFadingOut)
+        {
+            StartCoroutine(FadeOutAndDestroy());
+            isFadingOut = true;
+        }
+
+        if (CompareTag("Bomb") && !isExploading &&
             RectTransformUtility.RectangleContainsScreenPoint(
                 rectTransform, Input.mousePosition, Camera.main))
         {
-            Debug.Log("The cursos collises with bomb! (without car)");
-            TriggerExplotion();
+            Debug.Log("The cursor collided with a bomb! (without car)");
+            TriggerExplosion();
+
         }
 
+        // Caurskat?t no šejienes
 
-        if(ObjectScript.drag && !isFadingOut &&
-            RectTransformUtility.RectangleContainsScreenPoint(rectTransform,
-            Input.mousePosition, Camera.main))
+
+        if (ObjectScript.drag && !isFadingOut &&
+            RectTransformUtility.RectangleContainsScreenPoint(rectTransform, Input.mousePosition, Camera.main))
         {
-            Debug.Log("The cursor collinded with a flying object!");
+            Debug.Log("The cursor collided with a flying object!");
 
             if (ObjectScript.lastDragged != null)
             {
@@ -80,17 +82,18 @@ public class FlyingObjectControllerScript : MonoBehaviour
         }
     }
 
-    public void TriggerExplotion()
+    public void TriggerExplosion()
     {
         isExploading = true;
         objectScript.effects.PlayOneShot(objectScript.audioCli[6], 5f);
 
-        if(TryGetComponent<Animator>(out Animator animator))
+        if (TryGetComponent<Animator>(out Animator animator))
         {
             animator.SetBool("explode", true);
         }
+
         image.color = Color.red;
-        StartCoroutine(RecoverColor(0.5f));
+        StartCoroutine(RecoverColor(0.4f));
 
         StartCoroutine(Vibrate());
         StartCoroutine(WaitBeforeExpload());
@@ -99,7 +102,7 @@ public class FlyingObjectControllerScript : MonoBehaviour
     IEnumerator WaitBeforeExpload()
     {
         float radius = 0f;
-        if(TryGetComponent<CircleCollider2D>(out CircleCollider2D circleCollider))
+        if (TryGetComponent<CircleCollider2D>(out CircleCollider2D circleCollider))
         {
             radius = circleCollider.radius * transform.lossyScale.x;
         }
@@ -111,20 +114,19 @@ public class FlyingObjectControllerScript : MonoBehaviour
 
     void ExploadAndDestroy(float radius)
     {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position,
-            radius);
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, radius);
 
         foreach (var hitCollider in hitColliders)
         {
-            if(hitCollider != null && hitCollider.gameObject != gameObject){
+            if (hitCollider != null && hitCollider.gameObject != gameObject)
+            {
                 FlyingObjectControllerScript obj =
-                    hitCollider.gameObject.gameObject.
-                    GetComponent<FlyingObjectControllerScript>();
-                if(obj != null && obj.isExploading )
+                    hitCollider.gameObject.GetComponent<FlyingObjectControllerScript>();
+
+                if (obj != null && !obj.isExploading)
                 {
                     obj.StartToDestroy();
                 }
-
             }
         }
     }
@@ -135,9 +137,12 @@ public class FlyingObjectControllerScript : MonoBehaviour
         {
             StartCoroutine(FadeOutAndDestroy());
             isFadingOut = true;
+
             image.color = Color.cyan;
             StartCoroutine(RecoverColor(0.5f));
-            objectScript.effects.PlayOneShot(objectScript.audioCli[7]);
+
+            objectScript.effects.PlayOneShot(objectScript.audioCli[5]);
+
             StartCoroutine(Vibrate());
         }
     }
@@ -146,14 +151,14 @@ public class FlyingObjectControllerScript : MonoBehaviour
     {
         Vector2 originalPosition = rectTransform.anchoredPosition;
         float duration = 0.3f;
-        float elapsed = 0f;
+        float elpased = 0f;
         float intensity = 5f;
 
-        while (elapsed < duration)
+        while (elpased < duration)
         {
-            rectTransform.anchoredPosition = originalPosition + Random.insideUnitCircle *
-                intensity;
-            elapsed += Time.deltaTime;
+            rectTransform.anchoredPosition =
+                originalPosition + Random.insideUnitCircle * intensity;
+            elpased += Time.deltaTime;
             yield return null;
         }
         rectTransform.anchoredPosition = originalPosition;
@@ -170,14 +175,16 @@ public class FlyingObjectControllerScript : MonoBehaviour
         }
         canvasGroup.alpha = 1f;
     }
+
     IEnumerator FadeOutAndDestroy()
     {
         float t = 0f;
-        float StartAlpha = canvasGroup.alpha;
+        float startAlpha = canvasGroup.alpha;
+
         while (t < fadeDuration)
         {
             t += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(StartAlpha, 0f, t / fadeDuration);
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, 0f, t / fadeDuration);
             yield return null;
         }
         canvasGroup.alpha = 0f;
@@ -186,15 +193,14 @@ public class FlyingObjectControllerScript : MonoBehaviour
 
     IEnumerator ShrinkAndDestroy(GameObject target, float duration)
     {
-        Vector3 originalScale = target.transform.localScale;
-        Quaternion originalRotation = target.transform.rotation;
+        Vector3 orginalScale = target.transform.localScale;
+        Quaternion orginalRotation = target.transform.rotation;
         float t = 0f;
 
         while (t < duration)
         {
             t += Time.deltaTime;
-            target.transform.localScale = Vector3.Lerp(originalScale, Vector3.zero,
-                t / duration);
+            target.transform.localScale = Vector3.Lerp(orginalScale, Vector3.zero, t / duration);
             float angle = Mathf.Lerp(0f, 360f, t / duration);
             target.transform.rotation = Quaternion.Euler(0f, 0f, angle);
 
@@ -208,5 +214,6 @@ public class FlyingObjectControllerScript : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         image.color = originalColor;
     }
+
 
 }
