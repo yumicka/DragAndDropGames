@@ -8,6 +8,11 @@ public class Scenes_change : MonoBehaviour
         SceneManager.LoadScene("city_scene");
     }
 
+    public void MainScreen()
+    {
+        SceneManager.LoadScene("main_page");
+    }
+
     public void doExitGame()
     {
         Application.Quit();

@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class FlyingObjectControllerScript : MonoBehaviour
 {
@@ -79,7 +80,15 @@ public class FlyingObjectControllerScript : MonoBehaviour
             }
 
             StartToDestroy();
+            GameOver();
         }
+
+
+    }
+
+    private void GameOver()
+    {
+        SceneManager.LoadScene("GameOverScene");
     }
 
     public void TriggerExplosion()

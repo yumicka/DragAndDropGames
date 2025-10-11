@@ -13,12 +13,34 @@ public class DragAndDropScript : MonoBehaviour, IPointerDownHandler, IBeginDragH
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         canvasGro = GetComponent<CanvasGroup>();
+        if (canvasGro == null)
+            canvasGro = gameObject.AddComponent<CanvasGroup>();
         rectTra = GetComponent<RectTransform>();
-        
+        objectScr = FindFirstObjectByType<ObjectScript>();
+        screenBou = FindFirstObjectByType<Screen_boundaries_script>();
+
+        if (objectScr != null)
+        {
+            Debug.Log("ObjectScript найден: " + objectScr.gameObject.name);
+        }
+        else
+        {
+            Debug.LogWarning("ObjectScript не найден!");
+        }
+
+        if (screenBou != null)
+        {
+            Debug.Log("Screen_boundaries_script найден: " + screenBou.gameObject.name);
+        }
+        else
+        {
+            Debug.LogWarning("Screen_boundaries_script не найден!");
+        }
     }
+
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -34,7 +56,7 @@ public class DragAndDropScript : MonoBehaviour, IPointerDownHandler, IBeginDragH
         if (Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !Input.GetMouseButton(2))
         {
             ObjectScript.drag = true;
-            ObjectScript.lastDragged = eventData.pointerDrag;
+            ObjectScript.lastDragged = gameObject;
             canvasGro.blocksRaycasts = false;
             canvasGro.alpha = 0.6f;
             // rectTra.SetAsLastSibling();

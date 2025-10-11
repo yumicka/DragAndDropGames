@@ -8,6 +8,7 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
     private float xSizeDiff, ySizeDiff;
     public ObjectScript objScript;
 
+ 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void OnDrop(PointerEventData eventData)
@@ -34,15 +35,17 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
                 Debug.Log("Y size difference: " + ySizeDiff);
 
                 if ((rotDiff <= 5 || (rotDiff >= 355 && rotDiff <= 360)) &&
-                    (xSizeDiff <= 0.20 && ySizeDiff <= 0.20))
+                    (xSizeDiff <= 0.05 && ySizeDiff <= 0.05))
                 {
                     Debug.Log("Correct place");
                     objScript.rightPlace = true;
-                    eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = 
+                    eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition =
                         GetComponent<RectTransform>().anchoredPosition;
+
                     eventData.pointerDrag.GetComponent<RectTransform>().localRotation =
                         GetComponent<RectTransform>().localRotation;
-                    eventData.pointerDrag.GetComponent<RectTransform>().localScale = 
+
+                    eventData.pointerDrag.GetComponent<RectTransform>().localScale =
                         GetComponent<RectTransform>().localScale;
 
                     switch (eventData.pointerDrag.tag)
