@@ -15,3 +15,4 @@
 - [ x ] Create game timer (HH:MM:SS)
 - [ x ] Add animated clouds, vehicles, people, animals etc.
 - [ x ] Add flying obstacles with destroy effects
+- [ x ] Create random cars spawn
