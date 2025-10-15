@@ -8,8 +8,6 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
     private float xSizeDiff, ySizeDiff;
     public ObjectScript objScript;
 
- 
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void OnDrop(PointerEventData eventData)
     {
@@ -34,8 +32,7 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
                 Debug.Log("X size difference: " + xSizeDiff);
                 Debug.Log("Y size difference: " + ySizeDiff);
 
-                if ((rotDiff <= 5 || (rotDiff >= 355 && rotDiff <= 360)) &&
-                    (xSizeDiff <= 0.05 && ySizeDiff <= 0.05))
+                if ((rotDiff <= 10 || rotDiff >= 350) && xSizeDiff <= 0.2f && ySizeDiff <= 0.2f)
                 {
                     Debug.Log("Correct place");
                     objScript.rightPlace = true;
@@ -47,6 +44,22 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
 
                     eventData.pointerDrag.GetComponent<RectTransform>().localScale =
                         GetComponent<RectTransform>().localScale;
+                    objScript.win++;
+                  
+
+                    if (objScript.win >= 12)
+                    {
+                        
+                        TimerScript timer = FindFirstObjectByType<TimerScript>();
+                        if (timer == null)
+                        {
+                            timer.StopAndEvaluateStars();
+                        }
+
+
+                        if (objScript.winPanel != null)
+                            objScript.winPanel.SetActive(true);
+                    }
 
                     switch (eventData.pointerDrag.tag)
                     {
@@ -90,6 +103,8 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
                             Debug.Log("Unknown tag detected");
                             break;
                     }
+
+      
                 }
 
             }

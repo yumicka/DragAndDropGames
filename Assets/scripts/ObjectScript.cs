@@ -14,6 +14,8 @@ public class ObjectScript : MonoBehaviour
     public bool rightPlace = false;
     public static GameObject lastDragged = null;
     public static bool drag = false;
+    public int win = 0;
+    public GameObject winPanel;
 
 
     void Awake()
