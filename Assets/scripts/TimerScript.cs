@@ -4,10 +4,10 @@ using TMPro;
 public class TimerScript : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI timerText;
-    [SerializeField] GameObject[] stars; 
+    [SerializeField] GameObject[] stars;
     public float elapsedTime;
     public bool isRunning = true;
-    public int starCount = 0;
+    public int starCount = 0; 
 
     void Update()
     {
@@ -21,7 +21,6 @@ public class TimerScript : MonoBehaviour
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
-    
     public void StopAndEvaluateStars()
     {
         isRunning = false;
@@ -36,16 +35,13 @@ public class TimerScript : MonoBehaviour
         ShowStars();
     }
 
-   
     private void ShowStars()
     {
         if (stars == null || stars.Length == 0) return;
 
-       
         foreach (var s in stars)
             s.SetActive(false);
 
-        
         for (int i = 0; i < starCount && i < stars.Length; i++)
             stars[i].SetActive(true);
     }

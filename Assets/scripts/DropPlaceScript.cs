@@ -7,8 +7,6 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
     private Vector3 placeSiz, vehicleSiz;
     private float xSizeDiff, ySizeDiff;
     public ObjectScript objScript;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void OnDrop(PointerEventData eventData)
     {
         if ((eventData.pointerDrag != null) &&
@@ -45,13 +43,13 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
                     eventData.pointerDrag.GetComponent<RectTransform>().localScale =
                         GetComponent<RectTransform>().localScale;
                     objScript.win++;
-                  
+                    Debug.Log("Slay: " + objScript.win);
 
                     if (objScript.win >= 12)
                     {
                         
                         TimerScript timer = FindFirstObjectByType<TimerScript>();
-                        if (timer == null)
+                        if (timer != null)
                         {
                             timer.StopAndEvaluateStars();
                         }

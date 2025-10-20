@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Cars_Placement_Script : MonoBehaviour
@@ -23,7 +24,7 @@ public class Cars_Placement_Script : MonoBehaviour
 
         if (carPrefabs.Length == 0)
         {
-            Debug.LogError("?? Не найдены префабы машин в папке Resources/Prefabs_cars");
+            Debug.LogError("? Не найдены префабы машин в папке Resources/Prefabs_cars");
             return;
         }
 
@@ -34,32 +35,37 @@ public class Cars_Placement_Script : MonoBehaviour
     {
         if (screenBou == null)
         {
-            Debug.LogError("Screen_boundaries_script не найден!");
+            Debug.LogError("? Screen_boundaries_script не найден!");
             return;
         }
 
-        //Canvas parentCanvas = FindFirstObjectByType<Canvas>();
+        Canvas parentCanvas = FindFirstObjectByType<Canvas>();
+        if (parentCanvas == null)
+        {
+            Debug.LogError("? Canvas не найден в сцене!");
+            return;
+        }
 
+        // Список всех заспавненных машин
+        List<GameObject> spawnedCars = new List<GameObject>();
+
+        // ?? Создаём машины
         for (int i = 0; i < carPrefabs.Length; i++)
         {
-            GameObject carPrefab = carPrefabs[i]; // берем конкретный префаб
+            GameObject carPrefab = carPrefabs[i];
             GameObject newCar = Instantiate(carPrefab);
 
-            // Помещаем в Canvas, если это UI
-            Canvas parentCanvas = FindFirstObjectByType<Canvas>();
-            if (parentCanvas != null)
-                newCar.transform.SetParent(parentCanvas.transform, false);
+            newCar.transform.SetParent(parentCanvas.transform, false);
 
-            // Генерация случайной позиции внутри границ камеры
+            // Генерация случайной позиции внутри границ экрана
             float x = Random.Range(screenBou.minX, screenBou.maxX);
             float y = Random.Range(screenBou.minY, screenBou.maxY);
-            Vector3 spawnPos = new Vector3(x, y, 0f);
 
             RectTransform rect = newCar.GetComponent<RectTransform>();
             if (rect != null)
-                rect.anchoredPosition = new Vector2(x, y); // для UI
+                rect.anchoredPosition = new Vector2(x, y); // UI
             else
-                newCar.transform.position = spawnPos; // для 2D/3D
+                newCar.transform.position = new Vector3(x, y, 0f); // 2D/3D
 
             // Добавляем CanvasGroup, если нет
             if (newCar.GetComponent<CanvasGroup>() == null)
@@ -76,12 +82,33 @@ public class Cars_Placement_Script : MonoBehaviour
             DropPlaceScript drop = newCar.GetComponent<DropPlaceScript>();
             if (drop != null)
             {
-                drop.objScript = objectScr; // правильно назначаем
+                drop.objScript = objectScr;
             }
 
-            newCar.transform.SetAsLastSibling(); // на передний план
+            // ?? Размещение по иерархии (до SpawnPoint, если он есть)
+            Transform winPanel = parentCanvas.transform.Find("SpawnPoint");
+            if (winPanel != null)
+            {
+                newCar.transform.SetSiblingIndex(winPanel.GetSiblingIndex());
+            }
+            else
+            {
+                newCar.transform.SetAsFirstSibling();
+            }
+
+            spawnedCars.Add(newCar); // добавляем в список
         }
 
+        // ?? Передаём список машин в ObjectScript
+        if (objectScr != null)
+        {
+            objectScr.vehicles = spawnedCars.ToArray();
+            objectScr.InitializeVehicles();
+            Debug.Log($"? Машин передано в ObjectScript: {objectScr.vehicles.Length}");
+        }
+        else
+        {
+            Debug.LogWarning("?? ObjectScript не найден, не могу передать список машин.");
+        }
     }
-
 }

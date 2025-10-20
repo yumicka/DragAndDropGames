@@ -18,15 +18,20 @@ public class ObjectScript : MonoBehaviour
     public GameObject winPanel;
 
 
-    void Awake()
+    public void InitializeVehicles()
     {
+        if (vehicles == null || vehicles.Length == 0)
+        {
+            Debug.LogError("?? Vehicles array is empty! Ќазначь машины перед инициализацией.");
+            return;
+        }
+
         startCoordinates = new Vector2[vehicles.Length];
-        Debug.Log(vehicles.Length);
-        Debug.Log(startCoordinates.Length);
         for (int i = 0; i < vehicles.Length; i++)
         {
             startCoordinates[i] = vehicles[i].GetComponent<RectTransform>().localPosition;
-            Debug.Log(vehicles[i].GetComponent<RectTransform>().localPosition);
+            Debug.Log($"? Vehicle {i} start position: {startCoordinates[i]}");
         }
     }
+
 }
