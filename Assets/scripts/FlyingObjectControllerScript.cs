@@ -93,6 +93,11 @@ public class FlyingObjectControllerScript : MonoBehaviour
 
     public void TriggerExplosion()
     {
+        if (objectScript != null && objectScript.winPanel != null && objectScript.winPanel.activeSelf)
+        {
+            return;
+        }
+
         isExploading = true;
         objectScript.effects.PlayOneShot(objectScript.audioCli[6], 5f);
 

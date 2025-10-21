@@ -56,7 +56,17 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
                             timer.StopAndEvaluateStars();
                         }
                         if (objScript.winPanel != null)
+                        {
                             objScript.winPanel.SetActive(true);
+                            objScript.winPanel.transform.SetAsLastSibling();
+                            CanvasGroup cg = objScript.winPanel.GetComponent<CanvasGroup>();
+                            if (cg != null)
+                            {
+                                cg.blocksRaycasts = true;
+                                cg.interactable = true;
+                                cg.alpha = 1f;
+                            }
+                        }
                     }
 
                     switch (eventData.pointerDrag.tag)
