@@ -6,6 +6,13 @@ Spēle pārbauda objektu novietojumu, izmēru un rotāciju, atskaņo skaņas efe
 
 Kad visi transportlīdzekļi ir novietoti pareizi, tiek atvērts uzvaras panelis.
 
+Galvenais ekrāns:
+<img width="1918" height="1078" alt="изображение_2025-10-21_230137956" src="https://github.com/user-attachments/assets/8bf0cf04-3260-46db-bffd-164b642772d7" />
+
+Spēle:
+<img width="1919" height="1079" alt="изображение_2025-10-21_230333967" src="https://github.com/user-attachments/assets/f620ecd5-f970-48ad-8dba-fbf28d4d711b" />
+
+
 **To do list:**
 - [x] Create the necessary folders
 - [x] Add necessary assets
@@ -23,4 +30,3 @@ Kad visi transportlīdzekļi ir novietoti pareizi, tiek atvērts uzvaras panelis
 - [x] Add flying obstacles with destroy effects
 - [x] Create random cars spawn
 
-![Galvenais ekrāns]([https://i.imgur.com/abcd123.png](https://ibb.co/Txj19Q0M))
