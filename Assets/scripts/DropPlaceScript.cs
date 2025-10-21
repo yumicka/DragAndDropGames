@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public class DropPlaceScript : MonoBehaviour, IDropHandler
 {
@@ -7,6 +8,7 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
     private Vector3 placeSiz, vehicleSiz;
     private float xSizeDiff, ySizeDiff;
     public ObjectScript objScript;
+    public Cars_Placement_Script placementScript;
     public void OnDrop(PointerEventData eventData)
     {
         if ((eventData.pointerDrag != null) &&
@@ -53,8 +55,6 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
                         {
                             timer.StopAndEvaluateStars();
                         }
-
-
                         if (objScript.winPanel != null)
                             objScript.winPanel.SetActive(true);
                     }
@@ -113,42 +113,43 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
 
                 switch (eventData.pointerDrag.tag)
                     {
-                        case "Garbage":
+                        case "Medicine":
                             objScript.vehicles[0].GetComponent<RectTransform>().localPosition =
                                 objScript.startCoordinates[0];
-                            break;
-                        case "Medicine":
+                            
+                        break;
+                        case "Auto":
                             objScript.vehicles[1].GetComponent<RectTransform>().localPosition =
                                 objScript.startCoordinates[1];
                             break;
-                        case "Fire":
+                        case "Auto2":
                             objScript.vehicles[2].GetComponent<RectTransform>().localPosition =
-                                objScript.startCoordinates[2];
+                            objScript.startCoordinates[2];
                             break;
                         case "Bus":
                             objScript.vehicles[3].GetComponent<RectTransform>().localPosition =
                                 objScript.startCoordinates[3];
                             break;
-                        case "Auto":
-                            objScript.vehicles[4].GetComponent<RectTransform>().localPosition =
-                                objScript.startCoordinates[4];
-                            break;
+                        case "Auto3":
+                        objScript.vehicles[4].GetComponent<RectTransform>().localPosition =
+                            objScript.startCoordinates[4];
+                        break;
                         case "Cement":
                             objScript.vehicles[5].GetComponent<RectTransform>().localPosition =
                                 objScript.startCoordinates[5];
                             break;
-                        case "Auto2":
+                        case "Ekskavator":
                         objScript.vehicles[6].GetComponent<RectTransform>().localPosition =
                             objScript.startCoordinates[6];
                         break;
-                        case "Auto3":
-                        objScript.vehicles[7].GetComponent<RectTransform>().localPosition =
-                            objScript.startCoordinates[7];
+                        case "Fire":
+                            objScript.vehicles[7].GetComponent<RectTransform>().localPosition =
+                                objScript.startCoordinates[7];
                         break;
-                        case "Ekskavator":
-                        objScript.vehicles[8].GetComponent<RectTransform>().localPosition =
-                            objScript.startCoordinates[8];
-                        break;
+                        case "Garbage":
+                            objScript.vehicles[8].GetComponent<RectTransform>().localPosition =
+                                objScript.startCoordinates[8];
+                            break;
                         case "Police":
                             objScript.vehicles[9].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[9];
                             break;

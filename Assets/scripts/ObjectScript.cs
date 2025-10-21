@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ObjectScript : MonoBehaviour
 {
@@ -26,12 +27,33 @@ public class ObjectScript : MonoBehaviour
             return;
         }
 
+        vehicles = vehicles
+        .Where(v => !v.name.ToLower().Contains("place"))
+        .ToArray();
+
+        if (vehicles.Length == 0)
+        {
+            Debug.LogWarning("?? После фильтрации не осталось машин (все содержали 'place').");
+            return;
+        }
+
+        // ?? Запоминаем стартовые координаты
         startCoordinates = new Vector2[vehicles.Length];
         for (int i = 0; i < vehicles.Length; i++)
         {
-            startCoordinates[i] = vehicles[i].GetComponent<RectTransform>().localPosition;
-            Debug.Log($"? Vehicle {i} start position: {startCoordinates[i]}");
+            RectTransform rect = vehicles[i].GetComponent<RectTransform>();
+            if (rect != null)
+            {
+                startCoordinates[i] = rect.localPosition;
+                Debug.Log($"?? Vehicle {i} start position: {startCoordinates[i]} ({vehicles[i].name})");
+            }
+            else
+            {
+                Debug.LogWarning($"?? Vehicle {vehicles[i].name} не имеет RectTransform.");
+            }
         }
-    }
 
+        Debug.Log($"? Инициализировано {vehicles.Length} машин (без 'place').");
+    }
 }
+
