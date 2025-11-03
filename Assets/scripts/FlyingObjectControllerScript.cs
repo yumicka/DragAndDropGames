@@ -36,7 +36,6 @@ public class FlyingObjectControllerScript : MonoBehaviour
         StartCoroutine(FadeIn());
     }
 
-    // Update is called once per frame
     void Update()
     {
         float waveOffset = Mathf.Sin(Time.time * waveFrequency) * waveAmplitude;
@@ -55,20 +54,23 @@ public class FlyingObjectControllerScript : MonoBehaviour
             isFadingOut = true;
         }
 
+        Vector2 inputPosition;
+        if (!TryGetInputPosition(out inputPosition))
+            return;
+
+        //////////////////////////////
         if (CompareTag("Bomb") && !isExploading &&
             RectTransformUtility.RectangleContainsScreenPoint(
-                rectTransform, Input.mousePosition, Camera.main))
+                rectTransform, inputPosition, Camera.main))
         {
             Debug.Log("The cursor collided with a bomb! (without car)");
             TriggerExplosion();
 
         }
 
-        // Caurskat?t no šejienes
-
 
         if (ObjectScript.drag && !isFadingOut &&
-            RectTransformUtility.RectangleContainsScreenPoint(rectTransform, Input.mousePosition, Camera.main))
+            RectTransformUtility.RectangleContainsScreenPoint(rectTransform, inputPosition, Camera.main))
         {
             Debug.Log("The cursor collided with a flying object!");
 
@@ -91,6 +93,27 @@ public class FlyingObjectControllerScript : MonoBehaviour
         SceneManager.LoadScene("GameOverScene");
     }
 
+    bool TryGetInputPosition(out Vector2 position)
+    {
+        #if UNITY_EDITOR || UNITY_STANDALONE
+            position = Input.mousePosition;
+            return true;
+
+        #elif UNITY_ANDROID
+            if(Input.touchCount > 0){
+                position = Input.GetTouch(0).position;
+                return true
+            }
+            else
+            {
+                position = Vector2.zero;
+                return false;
+            }
+        #else
+            position = Vector2.zero;
+            return false;
+        #endif
+    }
     public void TriggerExplosion()
     {
         if (objectScript != null && objectScript.winPanel != null && objectScript.winPanel.activeSelf)
@@ -163,6 +186,9 @@ public class FlyingObjectControllerScript : MonoBehaviour
 
     IEnumerator Vibrate()
     {
+#if UNITY_ANDROID
+        Handheld.Vibrate();
+#endif
         Vector2 originalPosition = rectTransform.anchoredPosition;
         float duration = 0.3f;
         float elpased = 0f;

@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: e2338314e3eec954d8af4ca4101d6f1a
+guid: 33b9602af066c8145b37e6846757ac7b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1473910269680159735
-    second: cloud_main_0
-  - first:
-      213: 5649527410097501758
-    second: cloud_main_1
+      213: 1218268146595743105
+    second: ArrowLeft_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -129,35 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cloud_main_0
-      rect:
-        serializedVersion: 2
-        x: 1966
-        y: 1060
-        width: 22
-        height: 230
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7fb0617c491647410800000000000000
-      internalID: 1473910269680159735
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cloud_main_1
+      name: ArrowLeft_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1988
-        height: 1041
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e36b1bb3f37276e40800000000000000
-      internalID: 5649527410097501758
+      spriteID: 1854307bc6828e010800000000000000
+      internalID: 1218268146595743105
       vertices: []
       indices: 
       edges: []
@@ -185,9 +160,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      cloud_main_0: 1473910269680159735
-      cloud_main_1: 5649527410097501758
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

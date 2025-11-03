@@ -38,16 +38,18 @@ public class Cars_Placement_Script : MonoBehaviour
         List<GameObject> spawnedCars = new List<GameObject>();
 
         
+        Rect world = screenBou.worldBounds;
+
         for (int i = 0; i < carPrefabs.Length; i++)
         {
             GameObject carPrefab = carPrefabs[i];
             GameObject newCar = Instantiate(carPrefab);
-
             newCar.transform.SetParent(parentCanvas.transform, false);
 
-            float padding = 0.5f;
-            float x = Random.Range(screenBou.minX + padding, screenBou.maxX - padding);
-            float y = Random.Range(screenBou.minY + padding, screenBou.maxY - padding);
+
+            float padding = 100f;
+            float x = Random.Range(world.xMin + padding, world.xMax - padding);
+            float y = Random.Range(world.yMin + padding, world.yMax - padding);
 
             RectTransform rect = newCar.GetComponent<RectTransform>();
             if (rect != null)

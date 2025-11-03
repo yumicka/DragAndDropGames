@@ -9,11 +9,19 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
     private float xSizeDiff, ySizeDiff;
     public ObjectScript objScript;
     public Cars_Placement_Script placementScript;
+
+    void Start()
+    {
+        if(objScript == null)
+        {
+            objScript = FindFirstObjectByType<ObjectScript>();
+        }
+    }
     public void OnDrop(PointerEventData eventData)
     {
-        if ((eventData.pointerDrag != null) &&
-            Input.GetMouseButtonUp(0) && !Input.GetMouseButton(1) && !Input.GetMouseButton(2))
-        {
+        if (eventData.pointerDrag == null)
+            return;
+        
             if (eventData.pointerDrag.tag.Equals(tag))
             {
                 placeZRot =
@@ -115,7 +123,7 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
       
                 }
 
-            }
+            
             else
             {
                 objScript.rightPlace = false;

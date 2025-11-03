@@ -23,7 +23,7 @@ public class ObjectScript : MonoBehaviour
     {
         if (vehicles == null || vehicles.Length == 0)
         {
-            Debug.LogError("?? Vehicles array is empty! Назначь машины перед инициализацией.");
+   
             return;
         }
 
@@ -33,11 +33,10 @@ public class ObjectScript : MonoBehaviour
 
         if (vehicles.Length == 0)
         {
-            Debug.LogWarning("?? После фильтрации не осталось машин (все содержали 'place').");
             return;
         }
 
-        // ?? Запоминаем стартовые координаты
+       
         startCoordinates = new Vector2[vehicles.Length];
         for (int i = 0; i < vehicles.Length; i++)
         {
@@ -45,15 +44,9 @@ public class ObjectScript : MonoBehaviour
             if (rect != null)
             {
                 startCoordinates[i] = rect.localPosition;
-                Debug.Log($"?? Vehicle {i} start position: {startCoordinates[i]} ({vehicles[i].name})");
             }
-            else
-            {
-                Debug.LogWarning($"?? Vehicle {vehicles[i].name} не имеет RectTransform.");
-            }
+          
         }
-
-        Debug.Log($"? Инициализировано {vehicles.Length} машин (без 'place').");
     }
 }
 

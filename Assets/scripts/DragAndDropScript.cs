@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+// CHANGES FOR ANDROID
 public class DragAndDropScript : MonoBehaviour, IPointerDownHandler, IBeginDragHandler,
     IDragHandler, IEndDragHandler
 {
@@ -11,96 +12,126 @@ public class DragAndDropScript : MonoBehaviour, IPointerDownHandler, IBeginDragH
     public ObjectScript objectScr;
     public Screen_boundaries_script screenBou;
 
+    private Vector3 dragOffsetWorld;
+    private Camera uiCamera;
+    private Canvas canvas;
 
-    // Start is called before the first frame update
+
     void Awake()
     {
         canvasGro = GetComponent<CanvasGroup>();
-        if (canvasGro == null)
-            canvasGro = gameObject.AddComponent<CanvasGroup>();
         rectTra = GetComponent<RectTransform>();
-        objectScr = FindFirstObjectByType<ObjectScript>();
-        screenBou = FindFirstObjectByType<Screen_boundaries_script>();
 
-        if (objectScr != null)
+        if (objectScr == null)
         {
-            Debug.Log("ObjectScript найден: " + objectScr.gameObject.name);
-        }
-        else
-        {
-            Debug.LogWarning("ObjectScript не найден!");
+            objectScr = Object.FindFirstObjectByType<ObjectScript>();
         }
 
-        if (screenBou != null)
+        if (screenBou == null)
         {
-            Debug.Log("Screen_boundaries_script найден: " + screenBou.gameObject.name);
-        }
-        else
-        {
-            Debug.LogWarning("Screen_boundaries_script не найден!");
+            screenBou = Object.FindFirstObjectByType<Screen_boundaries_script>();
         }
     }
 
+    void Start()
+    {
+        canvas = GetComponentInParent<Canvas>();
+        if (canvas != null)
+        {
+            uiCamera = canvas.worldCamera;
+        }
+        else
+        {
+            Debug.LogError("Canvas not found for DragAndDropScript");
+        }
+    }
 
+    
+
+
+    // CHANGES FOR ANDROID
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !Input.GetMouseButton(2))
-        {
-            Debug.Log("OnPointerDown");
-            objectScr.effects.PlayOneShot(objectScr.audioCli[0]);
-        }
+        Debug.Log("OnPointerDown");
+        objectScr.effects.PlayOneShot(objectScr.audioCli[0]);
+
     }
 
+    // CHANGES FOR ANDROID
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !Input.GetMouseButton(2))
+        ObjectScript.drag = true;
+        ObjectScript.lastDragged = eventData.pointerDrag;
+        canvasGro.blocksRaycasts = false;
+        canvasGro.alpha = 0.6f;
+        //rectTra.SetAsLastSibling();
+        int lastIndex = transform.parent.childCount - 1;
+        int position = Mathf.Max(0, lastIndex - 1);
+        transform.SetSiblingIndex(position);
+
+        Vector3 pointerWorld;
+
+        if (ScreenPointToWorld(eventData.position, out pointerWorld))
         {
-            ObjectScript.drag = true;
-            ObjectScript.lastDragged = gameObject;
-            canvasGro.blocksRaycasts = false;
-            canvasGro.alpha = 0.6f;
+            dragOffsetWorld = transform.position - pointerWorld;
 
-            int lastIndex = transform.parent.childCount - 1;
-            int position = Mathf.Max(0, lastIndex - 1);
-            transform.SetSiblingIndex(position);
-
-            screenBou.screenPoint = Camera.main.WorldToScreenPoint(rectTra.position);
-
-            Vector3 worldMouse = Camera.main.ScreenToWorldPoint(
-                new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenBou.screenPoint.z));
-            screenBou.offset = rectTra.position - worldMouse;
         }
+        else
+        {
+            dragOffsetWorld = Vector3.zero;
+        }
+
+        ObjectScript.lastDragged = eventData.pointerDrag;
     }
 
+
+    // CHANGES FOR ANDROID
     public void OnDrag(PointerEventData eventData)
     {
-        if (Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !Input.GetMouseButton(2))
-        {
-            Vector3 curSreenPoint =
-                new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenBou.screenPoint.z);
-            Vector3 curPosition = Camera.main.ScreenToWorldPoint(curSreenPoint) + screenBou.offset;
-            rectTra.position = screenBou.GetClampedPosition(curPosition);
-        }
+        Vector3 pointerWorld;
+
+        if (!ScreenPointToWorld(eventData.position, out pointerWorld))
+            return;
+
+        Vector3 desiredPosition = pointerWorld + dragOffsetWorld;
+        desiredPosition.z = transform.position.z;
+
+        screenBou.RecalculateBounds();
+
+        Vector2 clamped = screenBou.GetClampedPosition(desiredPosition);
+        transform.position = new Vector3(clamped.x, clamped.y, desiredPosition.z);
     }
 
+    // CHANGES FOR ANDROID
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (Input.GetMouseButtonUp(0))
+        objectScr.effects.PlayOneShot(objectScr.audioCli[0]);
+        ObjectScript.drag = false;
+        canvasGro.blocksRaycasts = true;
+        canvasGro.alpha = 1.0f;
+
+        if (objectScr.rightPlace)
         {
-            ObjectScript.drag = false;
-            ObjectScript.lastDragged = eventData.pointerDrag;
-            canvasGro.blocksRaycasts = true;
-            canvasGro.alpha = 1.0f;
-
-            if (objectScr.rightPlace)
-            {
-                canvasGro.blocksRaycasts = false;
-                ObjectScript.lastDragged = null;
-
-
-            }
-
-            objectScr.rightPlace = false;
+            canvasGro.blocksRaycasts = false;
+            ObjectScript.lastDragged = null;
         }
+
+        objectScr.rightPlace = false;
+    }
+
+    private bool ScreenPointToWorld(Vector2 screenPoint, out Vector3 worldPoint)
+    {
+        worldPoint = Vector3.zero;
+
+        if (uiCamera == null)
+        {
+            return false;
+        }
+
+        float z = Mathf.Abs(uiCamera.transform.position.z - transform.position.z);
+        Vector3 sp = new Vector3(screenPoint.x, screenPoint.y, z);
+        worldPoint = uiCamera.ScreenToWorldPoint(sp);
+
+        return true;
     }
 }
