@@ -424,8 +424,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 182.72, y: 0.0000076294}
-  m_SizeDelta: {x: 176.8079, y: 170}
+  m_AnchoredPosition: {x: 174.9406, y: -12.174}
+  m_SizeDelta: {x: 161.2492, y: 145.65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &356197847
 MonoBehaviour:
@@ -446,7 +446,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1916404096}
           m_TargetAssemblyTypeName: TransformationScript, Assembly-CSharp
-          m_MethodName: StartScaleDownX
+          m_MethodName: StopScaleUpX
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -462,7 +462,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1916404096}
           m_TargetAssemblyTypeName: TransformationScript, Assembly-CSharp
-          m_MethodName: StopScaleDownX
+          m_MethodName: StartScaleUpX
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -770,9 +770,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -461, y: -1284}
+  m_AnchoredPosition: {x: -308, y: -935}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0.21731508}
 --- !u!1 &623394745
 GameObject:
   m_ObjectHideFlags: 0
@@ -942,9 +942,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 398, y: -1226}
-  m_SizeDelta: {x: 188.6228, y: -121.3111}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 235.51721, y: -862.9313}
+  m_SizeDelta: {x: 201.5884, y: -59.076}
+  m_Pivot: {x: 0.5, y: 0.49999988}
 --- !u!1 &691353933
 GameObject:
   m_ObjectHideFlags: 0
@@ -1669,9 +1669,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -185, y: 0.0000066757}
-  m_SizeDelta: {x: 176.8079, y: 170}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -160.53, y: -23.02}
+  m_SizeDelta: {x: 156.0629, y: 138.8825}
+  m_Pivot: {x: 0.5, y: 0.3975374}
 --- !u!114 &1167883284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1691,7 +1691,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1916404096}
           m_TargetAssemblyTypeName: TransformationScript, Assembly-CSharp
-          m_MethodName: StartScaleUpX
+          m_MethodName: StopScaleDownX
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1707,7 +1707,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1916404096}
           m_TargetAssemblyTypeName: TransformationScript, Assembly-CSharp
-          m_MethodName: StopScaleUpX
+          m_MethodName: StartScaleDownX
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1835,9 +1835,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.9075, y: -170}
-  m_SizeDelta: {x: 176.8079, y: 170}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 10.609, y: -164.81}
+  m_SizeDelta: {x: 163.8423, y: 159.6276}
+  m_Pivot: {x: 0.5000001, y: 0.50000006}
 --- !u!114 &1214418687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1857,7 +1857,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1916404096}
           m_TargetAssemblyTypeName: TransformationScript, Assembly-CSharp
-          m_MethodName: StartScaleUpY
+          m_MethodName: StopScaleDownY
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1873,7 +1873,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1916404096}
           m_TargetAssemblyTypeName: TransformationScript, Assembly-CSharp
-          m_MethodName: StopScaleUpY
+          m_MethodName: StartScaleDownY
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -2305,8 +2305,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.24783, y: 145.82}
-  m_SizeDelta: {x: 176.8079, y: 170.3364}
+  m_AnchoredPosition: {x: 10.6092, y: 136.7441}
+  m_SizeDelta: {x: 155.0912, y: 152.1845}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1789020198
 MonoBehaviour:
@@ -2327,7 +2327,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1916404096}
           m_TargetAssemblyTypeName: TransformationScript, Assembly-CSharp
-          m_MethodName: StartScaleDownY
+          m_MethodName: StopScaleUpY
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -2343,7 +2343,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1916404096}
           m_TargetAssemblyTypeName: TransformationScript, Assembly-CSharp
-          m_MethodName: StopScaleDownY
+          m_MethodName: StartScaleUpY
           m_Mode: 0
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

@@ -43,8 +43,7 @@ public class TransformationScript : MonoBehaviour
             rt.localScale -= new Vector3(scaleSpeed * Time.deltaTime, 0, 0);
         }
 
-        isTransforming = rotateCW || rotateCCW  || scaleUpY || scaleDownY
-            || scaleUpX || scaleDownX;
+        isTransforming = rotateCW || rotateCCW || scaleUpY || scaleDownY || scaleUpX || scaleDownX;
     }
 
     public void StartRotateCW(BaseEventData data) { rotateCW = true; }
@@ -64,5 +63,4 @@ public class TransformationScript : MonoBehaviour
 
     public void StartScaleDownX(BaseEventData data) { scaleDownX = true; }
     public void StopScaleDownX(BaseEventData data) { scaleDownX = false; }
-
 }
