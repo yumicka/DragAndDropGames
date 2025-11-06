@@ -20,8 +20,8 @@ public class PlainObjectSpawnScript : MonoBehaviour
     void Start()
     {
         screenBoundriesScript = FindFirstObjectByType<Screen_boundaries_script>();
-        minY = screenBoundriesScript.minY;
-        maxY = screenBoundriesScript.maxY;
+        minY = screenBoundriesScript.worldBounds.yMin;
+        maxY = screenBoundriesScript.worldBounds.yMax;
         InvokeRepeating(nameof(SpawnCloud), 0f, cloudSpawnInterval);
         InvokeRepeating(nameof(SpawnObject), 0f, objectSpawnInterval);
     }

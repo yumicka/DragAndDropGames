@@ -17,6 +17,7 @@ TagManager:
   - Traktor
   - Traktor2
   - Bomb
+  - IntestitialAdButton
   layers:
   - Default
   - TransparentFX
