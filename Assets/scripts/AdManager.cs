@@ -69,10 +69,10 @@ public class AdManager : MonoBehaviour
         if (interstitialAd == null)
             interstitialAd = FindFirstObjectByType<InterstitialAd>();
 
-        Button interstitialButton = 
-            GameObject.FindGameObjectWithTag("IntestitialAdButton").GetComponent<Button>();
+        Button interstitialButton =
+            GameObject.FindGameObjectWithTag("IntestitialAdButton")?.GetComponent<Button>();
 
-        if(interstitialAd != null && interstitialButton != null)
+        if (interstitialAd != null && interstitialButton != null)
         {
             interstitialAd.SetButton(interstitialButton);
         }
@@ -85,6 +85,11 @@ public class AdManager : MonoBehaviour
         }
 
         Debug.Log("Scene Loaded!");
+
+        // ???????? ????, ????? ????? ????????
+        firstAdShown = false;
+
         HandleAdsInitialized();
     }
+
 }

@@ -13,6 +13,11 @@ public class Scenes_change : MonoBehaviour
         SceneManager.LoadScene("main_page");
     }
 
+    public void HanojaScene()
+    {
+        SceneManager.LoadScene("Hanoja");
+    }
+
     public void doExitGame()
     {
         Application.Quit();
