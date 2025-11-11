@@ -4,29 +4,35 @@ using UnityEngine.UI;
 
 public class AdManager : MonoBehaviour
 {
-    public AdsInitializator adsInitializator;
+    public AdsInitializator adsInitializer;
     public InterstitialAd interstitialAd;
     [SerializeField] bool turnOffInterstitialAd = false;
     private bool firstAdShown = false;
 
-    // .........
+    public RewardedAds rewardedAds;
+    [SerializeField] bool turnOffRewardedAds = false;
+
+    // .......
 
     public static AdManager Instance { get; private set; }
 
+
     private void Awake()
     {
-        if(adsInitializator == null)
-            adsInitializator = FindFirstObjectByType<AdsInitializator>();
+        if (adsInitializer == null)
+            adsInitializer = FindFirstObjectByType<AdsInitializator>();
 
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
         Instance = this;
+
         DontDestroyOnLoad(gameObject);
-        adsInitializator.OnAdsIntitialized += HandleAdsInitialized;
+
+        adsInitializer.OnAdsIntitialized += HandleAdsInitialized;
     }
 
     private void HandleAdsInitialized()
@@ -36,19 +42,25 @@ public class AdManager : MonoBehaviour
             interstitialAd.OnInterstitialAdReady += HandleInterstitialReady;
             interstitialAd.LoadAd();
         }
+
+        if (!turnOffRewardedAds)
+        {
+            rewardedAds.LoadAd();
+        }
     }
 
-    public void HandleInterstitialReady()
+    private void HandleInterstitialReady()
     {
         if (!firstAdShown)
         {
-            Debug.Log("Showing first time interstirial");
+            Debug.Log("Showing first time interstitial ad automatically!");
             interstitialAd.ShowAd();
             firstAdShown = true;
+
         }
         else
         {
-            Debug.Log("Next interstitial ad ir ready for manual show");
+            Debug.Log("Next interstitial ad is ready for manual show!");
         }
     }
 
@@ -62,34 +74,40 @@ public class AdManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    public bool firstSceneLoad = false;
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mods)
+    private bool firstSceneLoad = false;
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (interstitialAd == null)
             interstitialAd = FindFirstObjectByType<InterstitialAd>();
 
         Button interstitialButton =
-            GameObject.FindGameObjectWithTag("IntestitialAdButton")?.GetComponent<Button>();
+            GameObject.FindGameObjectWithTag("InterstitialAdButton").GetComponent<Button>();
 
         if (interstitialAd != null && interstitialButton != null)
         {
             interstitialAd.SetButton(interstitialButton);
         }
 
+
+        if (rewardedAds == null)
+            rewardedAds = FindFirstObjectByType<RewardedAds>();
+
+        Button rewardedAdButton =
+            GameObject.FindGameObjectWithTag("RewardedButton").GetComponent<Button>();
+
+        if (rewardedAds != null && rewardedAdButton != null)
+            rewardedAds.SetButton(rewardedAdButton);
+
+
         if (!firstSceneLoad)
         {
             firstSceneLoad = true;
-            Debug.Log("First time scene loaded");
+            Debug.Log("First time scene loaded!");
             return;
         }
 
-        Debug.Log("Scene Loaded!");
-
-        // ???????? ????, ????? ????? ????????
-        firstAdShown = false;
-
+        Debug.Log("Scene loaded!");
         HandleAdsInitialized();
-    }
 
+    }
 }

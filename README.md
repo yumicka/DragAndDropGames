@@ -29,4 +29,10 @@ Spēle:
 - [x] Add animated clouds, vehicles, people, animals etc.
 - [x] Add flying obstacles with destroy effects
 - [x] Create random cars spawn
-
+- [x] Change target platform to Android
+- [x] Replace all mouse input with touch
+- [x] Fix camera max zoom
+- [x] Add interstitial ad
+- [x] Add rewarded ad
+- [] Add banner ad
+ 
