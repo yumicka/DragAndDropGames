@@ -34,5 +34,5 @@ Spēle:
 - [x] Fix camera max zoom
 - [x] Add interstitial ad
 - [x] Add rewarded ad
-- [] Add banner ad
+- [x] Add banner ad
  
