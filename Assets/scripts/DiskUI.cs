@@ -8,13 +8,16 @@ public class DiskUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 {
     [HideInInspector] public PillarUI currentPillar;
     [HideInInspector] public Vector3 lastValidPosition;
-    [SerializeField] public float diskSize = 1f; 
+    [SerializeField] public float diskSize = 1f;
+    [HideInInspector] public PillarUI lastPillar;
 
     private RectTransform rect;
     private Canvas canvas;
     private CanvasGroup canvasGroup;
     private Vector2 dragOffsetLocal;
     private int originalSiblingIndex;
+    private bool isDragging = false;
+
 
     void Awake()
     {
@@ -33,81 +36,96 @@ public class DiskUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnPointerDown(PointerEventData eventData)
     {
-       
+
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // only top disk allowed to drag
-        if (currentPillar != null && currentPillar.PeekTopDisk() != this) return;
+        isDragging = false;
 
-        // visual
+       
+        PillarUI pillar = PillarUI.FindPillarContainingDisk(this);
+
+        if (pillar == null)
+        {
+            Debug.Log($"BeginDrag {name}: no pillar contains this disk");
+            return; 
+        }
+
+        if (pillar.PeekTopDisk() != this)
+        {
+            Debug.Log($"BeginDrag {name}: not top disk on pillar {pillar.name}");
+            return; 
+        }
+
+        isDragging = true;
+        lastPillar = pillar;
+        currentPillar = null;
+
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 0.85f;
 
-        // remember last valid pos
         lastValidPosition = rect.position;
 
-        // bring visually to front
         originalSiblingIndex = rect.GetSiblingIndex();
         rect.SetAsLastSibling();
 
-        // compute offset so item doesn't jump
         Vector2 localPointer;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)rect.parent, eventData.position, canvas.worldCamera, out localPointer);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            (RectTransform)rect.parent, eventData.position, canvas.worldCamera, out localPointer);
         dragOffsetLocal = rect.localPosition - (Vector3)localPointer;
 
-        // detach from pillar stack (if any)
-        if (currentPillar != null) currentPillar.PopTopDisk();
-        currentPillar = null;
+        pillar.PopTopDisk();
+        Debug.Log($"BeginDrag {name}: popped from pillar {pillar.name}");
     }
+
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!isDragging) return;
+
         Vector2 localPointer;
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)rect.parent, eventData.position, canvas.worldCamera, out localPointer))
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                (RectTransform)rect.parent, eventData.position, canvas.worldCamera, out localPointer))
         {
             rect.localPosition = (Vector3)localPointer + (Vector3)dragOffsetLocal;
         }
     }
 
+
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!isDragging) return;
+
+        isDragging = false;
+
         canvasGroup.blocksRaycasts = true;
         canvasGroup.alpha = 1f;
 
-        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(canvas.worldCamera, rect.position);
+        Vector2 screenPos = eventData.position;
         PillarUI pillar = PillarUI.FindPillarUnderScreenPoint(screenPos, canvas);
 
         if (pillar != null && pillar.CanPlaceDisk(this))
         {
-            // Добавляем диск на верх стека с пересчётом позиции
             pillar.PushDisk(this, snapImmediately: false, keepPosition: false);
             currentPillar = pillar;
             lastValidPosition = rect.position;
+            Debug.Log($"EndDrag {name}: placed on pillar {pillar.name}");
+
+            var gm = FindObjectOfType<GameManagerUI>();
+            if (gm != null)
+                gm.OnDiskPlaced(pillar);
         }
         else
         {
-            // Возврат на предыдущую позицию
-            StartCoroutine(MoveToPosition(rect.position, lastValidPosition, 0.12f, () =>
+            if (lastPillar != null)
             {
-                rect.SetSiblingIndex(originalSiblingIndex);
-            }));
+                lastPillar.PushDisk(this, snapImmediately: true, keepPosition: false);
+                currentPillar = lastPillar;
+                Debug.Log($"EndDrag {name}: returned to pillar {lastPillar.name}");
+            }
+
+            rect.SetSiblingIndex(originalSiblingIndex);
         }
-    }
-
-
-
-    IEnumerator MoveToPosition(Vector3 from, Vector3 to, float duration, System.Action onComplete)
-    {
-        float t = 0f;
-        while (t < duration)
-        {
-            t += Time.unscaledDeltaTime;
-            rect.position = Vector3.Lerp(from, to, Mathf.SmoothStep(0f, 1f, t / duration));
-            yield return null;
-        }
-        rect.position = to;
-        onComplete?.Invoke();
     }
 }
