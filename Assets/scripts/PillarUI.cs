@@ -54,8 +54,13 @@ public class PillarUI : MonoBehaviour
             // Добавляем в стек в порядке снизу вверх (так индекс = 0 для нижнего)
             for (int i = 0; i < existing.Length; i++)
             {
-                PushDisk(existing[i], snapImmediately: true);
+                PushDisk(existing[i], snapImmediately: true, keepPosition: true);
             }
+        }
+        Debug.Log("Disks in pillar:");
+        foreach (var d in disks)
+        {
+            Debug.Log(d.name + " size: " + d.diskSize);
         }
     }
 
@@ -73,49 +78,40 @@ public class PillarUI : MonoBehaviour
     public int DiskCount => disks.Count;
 
     // push: snapImmediately = true используется при инициализации сцены (не анимировать)
-    public void PushDisk(DiskUI disk, bool snapImmediately = false)
+    public void PushDisk(DiskUI disk, bool snapImmediately = false, bool keepPosition = false)
     {
-        // индекс нового верхнего диска (нижний = 0)
         int index = disks.Count;
 
-        // опорный RectTransform
         RectTransform pillarRT = (topAnchor != null) ? topAnchor : (RectTransform)transform;
         RectTransform diskRT = disk.GetComponent<RectTransform>();
 
-        // делаем дочерним элементом пега (чтобы координаты были локальными)
-        // worldPositionStays = false => локальная позиция будет устанавливаться напрямую
+        // Сделаем диск дочерним столба
         diskRT.SetParent(pillarRT, worldPositionStays: false);
         diskRT.localScale = Vector3.one;
 
-        // вычисляем высоту/шаг стека
-        float step = diskSpacing;
-        if (step <= 0f)
+        // Рассчитываем позицию только если нужно
+        if (!keepPosition)
         {
-            step = diskRT.rect.height > 0f ? diskRT.rect.height : 30f;
+            float step = diskSpacing;
+            if (step <= 0f)
+                step = diskRT.rect.height > 0f ? diskRT.rect.height : 30f;
+
+            // Считаем Y с учётом pivot диска
+            float anchoredY = baseYPosition + step * index;
+
+            diskRT.anchoredPosition = new Vector2(0f, anchoredY);
+
+            // Визуально верхний диск поверх нижних
+            diskRT.SetAsLastSibling();
         }
 
-        // вычисляем anchored Y (снизу вверх)
-        float anchoredY = baseYPosition + step * index;
-
-        // ставим локальную anchored позицию по центру X (0) и вычисленному Y
-        diskRT.anchoredPosition = new Vector2(0f, anchoredY);
-
-        // добавляем в стек
         disks.Push(disk);
 
-        // обновляем данные диска
         disk.currentPillar = this;
-        disk.lastValidPosition = diskRT.position; // world position snapshot, можно также хранить anchoredPosition
-
-        // визуальные правки: чтобы верхний диск рисовался поверх нижних
-        diskRT.SetAsLastSibling();
-
-        // при snapImmediately == false можно добавить анимацию; здесь фиксируем сразу
-        if (!snapImmediately)
-        {
-            // ничего дополнительно не делаем (позиция уже установлена)
-        }
+        disk.lastValidPosition = diskRT.position;
     }
+
+
 
     // Возвращает мировую позицию верхнего места (для UI -> world conversion)
     public Vector3 GetTopPositionForDisk(DiskUI disk)

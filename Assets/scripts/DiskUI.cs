@@ -81,20 +81,21 @@ public class DiskUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         if (pillar != null && pillar.CanPlaceDisk(this))
         {
-            // Простой, надежный способ: сразу положить диск на пег (без world->anchored преобразований)
-            pillar.PushDisk(this);
+            // Добавляем диск на верх стека с пересчётом позиции
+            pillar.PushDisk(this, snapImmediately: false, keepPosition: false);
             currentPillar = pillar;
             lastValidPosition = rect.position;
         }
         else
         {
-            // вернуть обратно
+            // Возврат на предыдущую позицию
             StartCoroutine(MoveToPosition(rect.position, lastValidPosition, 0.12f, () =>
             {
                 rect.SetSiblingIndex(originalSiblingIndex);
             }));
         }
     }
+
 
 
     IEnumerator MoveToPosition(Vector3 from, Vector3 to, float duration, System.Action onComplete)
