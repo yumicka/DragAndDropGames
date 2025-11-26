@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Xml.Linq;
 using UnityEngine;
 
 public class PillarUI : MonoBehaviour
@@ -16,6 +15,7 @@ public class PillarUI : MonoBehaviour
     {
         all.Add(this);
     }
+
     void OnDestroy()
     {
         all.Remove(this);
@@ -75,14 +75,48 @@ public class PillarUI : MonoBehaviour
         Debug.Log($"PushDisk: {disk.name} -> {name}, index={index}");
     }
 
-    // 🔹 НОВОЕ: найти столб по диску
+    // ----------------------------------------------
+    //  🔥 Главный герой! Удаляет диск из стека правильно,
+    //     сохраняя порядок остальных.
+    // ----------------------------------------------
+    public bool RemoveDisk(DiskUI disk)
+    {
+        if (!disks.Contains(disk))
+            return false;
+
+        Stack<DiskUI> temp = new Stack<DiskUI>();
+
+        // вытаскиваем всё сверху, пока не найдём нужный диск
+        while (disks.Count > 0)
+        {
+            var top = disks.Pop();
+            if (top == disk)
+                break;
+
+            temp.Push(top);
+        }
+
+        // возвращаем то, что было выше диска
+        while (temp.Count > 0)
+        {
+            disks.Push(temp.Pop());
+        }
+
+        Debug.Log($"RemoveDisk: {disk.name} удалён из стека столба {name}");
+        return true;
+    }
+
+    // ----------------------------------------------
+    //  Используется DiskUI при драге
+    // ----------------------------------------------
     public static PillarUI FindPillarContainingDisk(DiskUI disk)
     {
         foreach (var p in all)
         {
             foreach (var d in p.disks)
             {
-                if (d == disk) return p;
+                if (d == disk)
+                    return p;
             }
         }
         return null;
@@ -101,16 +135,22 @@ public class PillarUI : MonoBehaviour
         {
             RectTransform rt = p.GetComponent<RectTransform>();
             if (rt == null) continue;
+
             if (RectTransformUtility.RectangleContainsScreenPoint(rt, screenPoint, canvas.worldCamera))
                 return p;
         }
 
         PillarUI best = null;
         float bestDist = float.PositiveInfinity;
+
         foreach (var p in all)
         {
             float dx = Mathf.Abs(p.GetComponent<RectTransform>().position.x - screenPoint.x);
-            if (dx < bestDist) { bestDist = dx; best = p; }
+            if (dx < bestDist)
+            {
+                bestDist = dx;
+                best = p;
+            }
         }
         return best;
     }

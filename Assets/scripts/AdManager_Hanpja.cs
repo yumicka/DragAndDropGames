@@ -2,20 +2,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class AdManager : MonoBehaviour
+public class AdManager_Hanpja : MonoBehaviour
 {
     public AdsInitializator adsInitializer;
     public InterstitialAd interstitialAd;
     [SerializeField] bool turnOffInterstitialAd = false;
     private bool firstAdShown = false;
 
-    public RewardedAds rewardedAds;
+    public RewardedHanoja rewardedAds;
     [SerializeField] bool turnOffRewardedAds = false;
 
     public BannerAd bannerAd;
     [SerializeField] bool turnOffBannerAd = false;
 
-    public static AdManager Instance { get; private set; }
+    public static AdManager_Hanpja Instance { get; private set; }
 
     private void Awake()
     {
@@ -28,8 +28,8 @@ public class AdManager : MonoBehaviour
             return;
         }
 
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //Instance = this;
+        //DontDestroyOnLoad(gameObject);
 
         if (adsInitializer != null)
             adsInitializer.OnAdsIntitialized += HandleAdsInitialized;
@@ -48,13 +48,7 @@ public class AdManager : MonoBehaviour
         {
             rewardedAds.LoadAd();
         }
-
-        if (!turnOffBannerAd && bannerAd != null)
-        {
-            bannerAd.LoadAndShowBanner();
-        }
     }
-
 
     private void HandleInterstitialReady()
     {
@@ -95,7 +89,7 @@ public class AdManager : MonoBehaviour
         }
 
         if (rewardedAds == null)
-            rewardedAds = FindFirstObjectByType<RewardedAds>();
+            rewardedAds = FindFirstObjectByType<RewardedHanoja>();
 
         var rewardedGo = GameObject.FindGameObjectWithTag("RewardedButton");
         Button rewardedAdButton = rewardedGo != null ? rewardedGo.GetComponent<Button>() : null;

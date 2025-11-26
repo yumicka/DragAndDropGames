@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Advertisements;
 using UnityEngine.UI;
@@ -73,13 +73,11 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
     public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
     {
 
-        //if (placementId.Equals(_adUnitId) &&
-        //  showCompletionState.Equals(UnityAdsCompletionState.COMPLETED)) {
         Debug.Log("Rewarded ad completed!");
         flayingObjectManager.DestroyAllFlyingObjects();
         _rewardedAdButton.interactable = false;
         StartCoroutine(WaitAndLoad(10f));
-        // }
+        
 
         Time.timeScale = 1f;
     }

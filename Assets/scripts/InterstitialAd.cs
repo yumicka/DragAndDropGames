@@ -100,6 +100,7 @@ public class InterstitialAd : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSho
         } else
         {
             Debug.Log("Interstitial ad skipped is unknown!");
+            Time.timeScale = 1.0f;
             LoadAd();
         }
     }
